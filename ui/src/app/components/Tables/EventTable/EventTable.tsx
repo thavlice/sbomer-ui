@@ -37,7 +37,7 @@ export const EventTable = () => {
     setQuerySearchbarValue(query || '');
   }, [query]);
 
-  const [{ value, loading, total, error }] = useRequestEvents();
+  const [{ value, loading, total, error }, { retry }] = useRequestEvents();
 
   const onSetPage = (newPage: number) => {
     setFilters(query, newPage, pageSize);
@@ -84,7 +84,8 @@ export const EventTable = () => {
       onSearchChange={setQuerySearchbarValue}
       onSearchClear={clearFilters}
       onSearchExecute={executeSearch}
-      helpEnabled={true}
+      onRefresh={retry}
+      helpEnabled={false}
       helpPath="/help"
       noResultsTitle="No events found"
       noResultsMessage="Try adjusting your search query or clear the filters to see all events."

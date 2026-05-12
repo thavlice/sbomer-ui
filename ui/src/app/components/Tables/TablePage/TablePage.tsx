@@ -22,7 +22,7 @@ import {
   Tag,
   Tile,
 } from '@carbon/react';
-import { Help } from '@carbon/icons-react';
+import { Help, Renew } from '@carbon/icons-react';
 import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
@@ -58,6 +58,9 @@ export interface TablePageProps<T> {
   helpEnabled?: boolean;
   helpPath?: string;
 
+  // Optional refresh functionality
+  onRefresh?: () => void;
+
   // Optional no results customization
   noResultsTitle?: string;
   noResultsMessage?: string;
@@ -92,6 +95,7 @@ export function TablePage<T>({
   onSearchExecute,
   helpEnabled = false,
   helpPath = '/help',
+  onRefresh,
   noResultsTitle = 'No results found',
   noResultsMessage = 'Try adjusting your search or filters.',
   noResultsActionText = 'Clear filters',
@@ -184,25 +188,36 @@ export function TablePage<T>({
 
   return (
     <TableContainer title={title} description={description}>
-      {searchEnabled && (
+      {(searchEnabled || onRefresh || helpEnabled) && (
         <TableToolbar>
           <TableToolbarContent>
-            <TableToolbarSearch
-              persistent
-              labelText={searchLabel}
-              placeholder={searchPlaceholder}
-              value={searchValue}
-              onChange={(event) => {
-                if (typeof event !== 'string' && event.target) {
-                  onSearchChange?.(event.target.value);
-                }
-              }}
-              onClear={onSearchClear}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') onSearchExecute?.();
-              }}
-              size="md"
-            />
+            {searchEnabled && (
+              <TableToolbarSearch
+                persistent
+                labelText={searchLabel}
+                placeholder={searchPlaceholder}
+                value={searchValue}
+                onChange={(event) => {
+                  if (typeof event !== 'string' && event.target) {
+                    onSearchChange?.(event.target.value);
+                  }
+                }}
+                onClear={onSearchClear}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') onSearchExecute?.();
+                }}
+                size="md"
+              />
+            )}
+            {onRefresh && (
+              <Button
+                kind="ghost"
+                hasIconOnly
+                iconDescription="Refresh"
+                renderIcon={Renew}
+                onClick={onRefresh}
+              />
+            )}
             {helpEnabled && (
               <Button
                 kind="ghost"

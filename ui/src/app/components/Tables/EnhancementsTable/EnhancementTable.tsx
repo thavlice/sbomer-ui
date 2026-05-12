@@ -59,8 +59,10 @@ export const EnhancementTable = () => {
   const paramPage = useSearchParam('page') || 1;
   const paramPageSize = useSearchParam('pageSize') || 10;
 
-  const [{ pageIndex, pageSize, value, loading, total, error }, { setPageIndex, setPageSize }] =
-    useEnhancements(+paramPage - 1, +paramPageSize);
+  const [
+    { pageIndex, pageSize, value, loading, total, error },
+    { setPageIndex, setPageSize, retry },
+  ] = useEnhancements(+paramPage - 1, +paramPageSize);
 
   const onSetPage = (newPage: number) => {
     setPageIndex(newPage - 1);
@@ -99,6 +101,7 @@ export const EnhancementTable = () => {
       pageSize={pageSize}
       onPageChange={onSetPage}
       onPageSizeChange={onPerPageSelect}
+      onRefresh={retry}
       noResultsTitle="No enhancements found"
       noResultsMessage="No enhancements were made."
       noResultsActionText="Take me home"
