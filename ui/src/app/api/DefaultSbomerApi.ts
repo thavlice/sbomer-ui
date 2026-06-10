@@ -20,6 +20,7 @@ import axios, { Axios, AxiosError } from 'axios';
 import {
   EnhancementRunRecord,
   EnhancementRunRecordPayload,
+  GenerationRequestsDTO,
   GenerationRunRecord,
   GenerationRunRecordPayload,
   SbomerApi,
@@ -29,6 +30,7 @@ import {
   SbomerGeneration,
   SbomerGenerationPayload,
   SbomerStats,
+  TriggerResponse,
 } from '../types';
 import { ApiPaginatedResponse } from './types';
 
@@ -315,6 +317,15 @@ export class DefaultSbomerApi implements SbomerApi {
         );
       }
       throw error instanceof Error ? error : new Error(String(error));
+    }
+  }
+
+  async submitGenerationRequest(payload: GenerationRequestsDTO): Promise<TriggerResponse> {
+    try {
+      const response = await this.client.post('/api/v1/generations', payload);
+      return response.data as TriggerResponse;
+    } catch (error) {
+      throw parseAxiosError(error as AxiosError, 'Failed to submit generation request');
     }
   }
 }

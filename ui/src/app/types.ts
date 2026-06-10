@@ -354,6 +354,25 @@ export type GenerateParams = {
   config: string;
 };
 
+export interface GenerationRequestsDTO {
+  generationRequests: Array<{
+    target: {
+      type: string;
+      identifier: string;
+    };
+    handlerProvidedOptions?: Record<string, unknown>;
+  }>;
+  publishers?: Array<{
+    name: string;
+    version: string;
+    options?: Record<string, unknown>;
+  }>;
+}
+
+export interface TriggerResponse {
+  id: string;
+}
+
 export type SbomerApi = {
   getBaseUrl(): string;
   stats(): Promise<SbomerStats>;
@@ -385,4 +404,7 @@ export type SbomerApi = {
   // Enhancement Runs
   getEnhancementRuns(_enhancementId: string): Promise<EnhancementRunRecord[]>;
   getEnhancementRun(_enhancementId: string, _runId: string): Promise<EnhancementRunRecord>;
+
+  // Submit Generation Request
+  submitGenerationRequest(_payload: GenerationRequestsDTO): Promise<TriggerResponse>;
 };

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 import {
+  Add,
   Application,
   Dashboard as DashboardIcon,
   DataEnrichmentAdd,
@@ -16,6 +17,7 @@ import { GenerationPage } from './components/Pages/Generations/GenerationPage';
 import { GenerationRunPage } from './components/Pages/Generations/GenerationRunPage';
 import { GenerationsPage } from './components/Pages/Generations/GenerationsPage';
 import { NotFoundPage } from './components/Pages/NotFound/NotFoundPage';
+import { RequestSubmissionPage } from './components/Pages/RequestSubmission/RequestSubmissionPage';
 
 export interface IAppRoute {
   label?: string; // Excluding the label will exclude the route from the nav sidebar in AppLayout
@@ -42,6 +44,13 @@ const routes: AppRouteConfig[] = [
     label: 'Dashboard',
     path: '/',
     icon: DashboardIcon,
+    divider: true,
+  },
+  {
+    element: <RequestSubmissionPage />,
+    label: 'Submit Request',
+    path: '/submit',
+    icon: Add,
     divider: true,
   },
   {
